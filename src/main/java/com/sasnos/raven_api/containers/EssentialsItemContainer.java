@@ -1,4 +1,4 @@
-package containers;
+package com.sasnos.raven_api.containers;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;

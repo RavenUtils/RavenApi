@@ -1,4 +1,4 @@
-package tile_entities;
+package com.sasnos.raven_api.tile_entities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;

@@ -1,4 +1,4 @@
-package datagen.advancement;
+package com.sasnos.raven_api.datagen.advancement;
 
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;

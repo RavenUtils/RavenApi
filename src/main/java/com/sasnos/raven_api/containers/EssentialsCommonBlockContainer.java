@@ -1,4 +1,4 @@
-package containers;
+package com.sasnos.raven_api.containers;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,4 +1,4 @@
-package blocks;
+package com.sasnos.raven_api.blocks;
 
 
 import net.minecraft.block.Block;

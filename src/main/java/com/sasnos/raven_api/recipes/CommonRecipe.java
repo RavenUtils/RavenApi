@@ -1,4 +1,4 @@
-package recipes;
+package com.sasnos.raven_api.recipes;
 
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.item.ItemStack;

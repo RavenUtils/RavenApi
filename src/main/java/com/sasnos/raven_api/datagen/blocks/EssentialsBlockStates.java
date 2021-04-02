@@ -1,4 +1,4 @@
-package datagen.blocks;
+package com.sasnos.raven_api.datagen.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -1,4 +1,4 @@
-package utils;
+package com.sasnos.raven_api.utils;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

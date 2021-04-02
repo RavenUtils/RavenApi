@@ -1,4 +1,4 @@
-package datagen.builders;
+package com.sasnos.raven_api.datagen.builders;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;

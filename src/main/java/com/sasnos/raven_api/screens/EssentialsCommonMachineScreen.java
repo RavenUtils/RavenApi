@@ -1,7 +1,7 @@
-package screens;
+package com.sasnos.raven_api.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.sasnos.ravenutils.api.containers.EssentialsMachineBlockContainer;
+import com.sasnos.raven_api.containers.EssentialsMachineBlockContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 

@@ -1,7 +1,7 @@
-package screens;
+package com.sasnos.raven_api.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.sasnos.ravenutils.api.containers.EssentialsCommonContainer;
+import com.sasnos.raven_api.containers.EssentialsCommonContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

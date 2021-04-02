@@ -1,7 +1,7 @@
-package tile_entities;
+package com.sasnos.raven_api.tile_entities;
 
-import com.sasnos.ravenutils.api.recipes.CommonRecipe;
-import com.sasnos.ravenutils.api.recipes.ICommonRecipe;
+import com.sasnos.raven_api.recipes.CommonRecipe;
+import com.sasnos.raven_api.recipes.ICommonRecipe;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -114,7 +114,7 @@ public abstract class EssentialsMachineTileEntity<T extends IRecipe<?>> extends 
   public T getRecipe(ItemStack stack) {
     if (stack == ItemStack.EMPTY) return null;
 
-    Set<IRecipe<?>> recipes = findRecipeByType(type, this.world);
+    Set<IRecipe<?>> recipes = findRecipeByType(recipeType, this.world);
     RecipeWrapper wrapper = new RecipeWrapper(itemHandler);
     return matching(recipes, wrapper, world);
   }
@@ -123,7 +123,7 @@ public abstract class EssentialsMachineTileEntity<T extends IRecipe<?>> extends 
   public T getRecipeFromOutput(ItemStack result) {
     if (result == ItemStack.EMPTY) return null;
 
-    Set<IRecipe<?>> recipes = findRecipeByType(type, this.world);
+    Set<IRecipe<?>> recipes = findRecipeByType(recipeType, this.world);
 
     return matchingOutput(recipes, result, world);
   }

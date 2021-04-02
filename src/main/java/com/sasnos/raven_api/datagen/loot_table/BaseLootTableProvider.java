@@ -1,8 +1,7 @@
-package datagen.loot_table;
+package com.sasnos.raven_api.datagen.loot_table;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sasnos.ravenutils.RavenUtils;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -30,10 +29,12 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
   protected final Set<Map<Block, LootTable.Builder>> lootTables = new HashSet<>();
   public static Map<ResourceLocation, LootTable> tables = new HashMap<>();
   protected final DataGenerator generator;
+  private String modid;
 
-  public BaseLootTableProvider(DataGenerator dataGeneratorIn) {
+  public BaseLootTableProvider(DataGenerator dataGeneratorIn, String modidIn) {
     super(dataGeneratorIn);
     this.generator = dataGeneratorIn;
+    modid = modidIn;
   }
 
   protected abstract void addTables();
@@ -77,6 +78,6 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
 
   @Override
   public String getName() {
-    return RavenUtils.MOD_ID + " LootTables";
+    return modid + " LootTables";
   }
 }

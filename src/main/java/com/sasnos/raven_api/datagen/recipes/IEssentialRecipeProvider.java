@@ -1,4 +1,4 @@
-package datagen.recipes;
+package com.sasnos.raven_api.datagen.recipes;
 
 public interface IEssentialRecipeProvider {
 

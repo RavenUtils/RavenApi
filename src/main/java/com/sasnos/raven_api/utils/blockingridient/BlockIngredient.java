@@ -1,4 +1,4 @@
-package utils.blockingridient;
+package com.sasnos.raven_api.utils.blockingridient;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;

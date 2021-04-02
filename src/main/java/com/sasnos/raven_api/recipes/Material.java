@@ -1,4 +1,4 @@
-package recipes;
+package com.sasnos.raven_api.recipes;
 
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;

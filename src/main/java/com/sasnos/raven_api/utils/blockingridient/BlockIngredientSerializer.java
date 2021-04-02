@@ -1,4 +1,4 @@
-package utils.blockingridient;
+package com.sasnos.raven_api.utils.blockingridient;
 
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;

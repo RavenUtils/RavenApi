@@ -1,4 +1,4 @@
-package datagen.loot_table;
+package com.sasnos.raven_api.datagen.loot_table;
 
 import net.minecraft.loot.LootParameterSet;
 import net.minecraft.loot.LootTable;

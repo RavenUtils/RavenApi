@@ -1,4 +1,4 @@
-package datagen.builders;
+package com.sasnos.raven_api.datagen.builders;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -20,8 +20,6 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

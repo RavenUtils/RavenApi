@@ -1,4 +1,4 @@
-package datagen.recipes;
+package com.sasnos.raven_api.datagen.recipes;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;

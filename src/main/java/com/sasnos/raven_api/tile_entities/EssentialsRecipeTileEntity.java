@@ -1,6 +1,6 @@
-package tile_entities;
+package com.sasnos.raven_api.tile_entities;
 
-import com.sasnos.ravenutils.api.recipes.CommonRecipe;
+import com.sasnos.raven_api.recipes.CommonRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 
 public abstract class EssentialsRecipeTileEntity<T extends IRecipe<?>> extends EssentialsCommonTileEntity {
 
-  protected IRecipeType<?> type;
+  protected IRecipeType<?> recipeType;
 
   public EssentialsRecipeTileEntity(TileEntityType<?> tileEntityTypeIn, IRecipeType<?> recipeType) {
     super(tileEntityTypeIn);
-    type = recipeType;
+    this.recipeType = recipeType;
   }
 
   protected abstract T getRecipe(ItemStack stack);

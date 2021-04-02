@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.sasnos.raven_api;
 
 import net.minecraftforge.fml.common.Mod;
 
