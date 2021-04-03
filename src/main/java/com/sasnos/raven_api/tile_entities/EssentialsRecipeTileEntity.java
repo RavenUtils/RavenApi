@@ -1,8 +1,6 @@
 package com.sasnos.raven_api.tile_entities;
 
 import com.sasnos.raven_api.recipes.CommonRecipe;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,13 +29,6 @@ public abstract class EssentialsRecipeTileEntity<T extends IRecipe<?>> extends E
   }
 
   protected abstract T getRecipe(ItemStack stack);
-
-  public static Set<IRecipe<?>> findRecipeByType(IRecipeType<?> recipeType) {
-    ClientWorld world = Minecraft.getInstance().world;
-    return world != null ?
-        world.getRecipeManager().getRecipes().stream().filter(iRecipe -> iRecipe.getType() == recipeType).collect(Collectors.toSet())
-        : Collections.emptySet();
-  }
 
   public static Set<IRecipe<?>> findRecipeByType(IRecipeType<?> recipeType, World world) {
     return world != null ?
