@@ -24,7 +24,7 @@ public class EssentialsCookingRecipeBuilder {
   private final Ingredient ingredient;
   private final float experience;
   private final int cookingTime;
-  private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+  private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
   private String group;
   private final CookingRecipeSerializer<?> recipeSerializer;
 
@@ -41,15 +41,15 @@ public class EssentialsCookingRecipeBuilder {
   }
 
   public static EssentialsCookingRecipeBuilder blastingRecipe(Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookingTimeIn) {
-    return cookingRecipe(ingredientIn, resultIn, experienceIn, cookingTimeIn, IRecipeSerializer.BLASTING);
+    return cookingRecipe(ingredientIn, resultIn, experienceIn, cookingTimeIn, IRecipeSerializer.BLASTING_RECIPE);
   }
 
   public static EssentialsCookingRecipeBuilder smeltingRecipe(Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookingTimeIn) {
-    return cookingRecipe(ingredientIn, resultIn, experienceIn, cookingTimeIn, IRecipeSerializer.SMELTING);
+    return cookingRecipe(ingredientIn, resultIn, experienceIn, cookingTimeIn, IRecipeSerializer.SMELTING_RECIPE);
   }
 
   public EssentialsCookingRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-    this.advancementBuilder.withCriterion(name, criterionIn);
+    this.advancementBuilder.addCriterion(name, criterionIn);
     return this;
   }
 
@@ -69,8 +69,8 @@ public class EssentialsCookingRecipeBuilder {
 
   public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
     this.validate(id);
-    this.advancementBuilder.withParentId(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-    consumerIn.accept(new EssentialsCookingRecipeBuilder.Result(id, this.group == null ? "" : this.group, this.ingredient, this.result, this.experience, this.cookingTime, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + this.result.getItem().getGroup().getPath() + "/" + id.getPath()), this.recipeSerializer));
+    this.advancementBuilder.parent(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+    consumerIn.accept(new EssentialsCookingRecipeBuilder.Result(id, this.group == null ? "" : this.group, this.ingredient, this.result, this.experience, this.cookingTime, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + this.result.getItem().getItemCategory().getRecipeFolderName() + "/" + id.getPath()), this.recipeSerializer));
   }
 
   /**
@@ -108,12 +108,12 @@ public class EssentialsCookingRecipeBuilder {
       this.serializer = serializerIn;
     }
 
-    public void serialize(JsonObject json) {
+    public void serializeRecipeData(JsonObject json) {
       if (!this.group.isEmpty()) {
         json.addProperty("group", this.group);
       }
 
-      json.add("ingredient", this.ingredient.serialize());
+      json.add("ingredient", this.ingredient.toJson());
 
       if (this.result.getCount() > 1) {
         json.add("result", serializeItem(this.result));
@@ -132,14 +132,14 @@ public class EssentialsCookingRecipeBuilder {
       return json;
     }
 
-    public IRecipeSerializer<?> getSerializer() {
+    public IRecipeSerializer<?> getType() {
       return this.serializer;
     }
 
     /**
      * Gets the ID for the recipe.
      */
-    public ResourceLocation getID() {
+    public ResourceLocation getId() {
       return this.id;
     }
 
@@ -147,16 +147,16 @@ public class EssentialsCookingRecipeBuilder {
      * Gets the JSON for the advancement that unlocks this recipe. Null if there is no advancement.
      */
     @Nullable
-    public JsonObject getAdvancementJson() {
-      return this.advancementBuilder.serialize();
+    public JsonObject serializeAdvancement() {
+      return this.advancementBuilder.serializeToJson();
     }
 
     /**
-     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #getAdvancementJson}
+     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #serializeAdvancement()}
      * is non-null.
      */
     @Nullable
-    public ResourceLocation getAdvancementID() {
+    public ResourceLocation getAdvancementId() {
       return this.advancementId;
     }
   }

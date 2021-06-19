@@ -18,7 +18,7 @@ public abstract class EssentialsMachineBlockContainer extends EssentialsCommonBl
 
     this.machineData = data;
 
-    trackIntArray(machineData);
+    addDataSlots(machineData);
   }
 
 

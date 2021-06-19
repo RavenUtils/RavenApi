@@ -18,6 +18,6 @@ public abstract class EssentialsLootTableProvider<T> implements ILootTableProvid
   }
 
   public LootTable.Builder addParameterSet(LootTable.Builder builder) {
-    return builder.setParameterSet(parameterSet);
+    return builder.setParamSet(parameterSet);
   }
 }

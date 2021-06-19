@@ -23,7 +23,7 @@ public abstract class EssentialsCommonBlockContainer extends EssentialsCommonCon
                                            PlayerEntity player,
                                            Block blocktype) {
     super(type, id, playerInventoryIn);
-    tileEntity = world.getTileEntity(pos);
+    tileEntity = world.getBlockEntity(pos);
     this.blocktype = blocktype;
     this.playerEntity = player;
     if (tileEntity != null) {
@@ -35,13 +35,13 @@ public abstract class EssentialsCommonBlockContainer extends EssentialsCommonCon
 
 
   @Override
-  public boolean canInteractWith(PlayerEntity playerIn) {
-    return isWithinUsableDistance(
-        IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()),
+  public boolean stillValid(PlayerEntity playerIn) {
+    return stillValid(
+        IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()),
         playerEntity,
         blocktype);
   }
 
   @Override
-  public abstract ItemStack transferStackInSlot(PlayerEntity playerIn, int index);
+  public abstract ItemStack quickMoveStack(PlayerEntity playerIn, int index);
 }

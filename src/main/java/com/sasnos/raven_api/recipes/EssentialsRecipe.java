@@ -31,7 +31,7 @@ public abstract class EssentialsRecipe implements ICommonRecipe {
   public abstract NonNullList<Ingredient> getIngredients();
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 

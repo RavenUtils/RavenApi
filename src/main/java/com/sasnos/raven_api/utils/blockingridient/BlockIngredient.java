@@ -71,7 +71,7 @@ public class BlockIngredient extends Ingredient {
         }
     }
 
-    public JsonElement serialize() {
+    public JsonElement toJson() {
         if (this.acceptedBlocks.length == 1) {
             return this.acceptedBlocks[0].serialize();
         } else {
@@ -85,7 +85,7 @@ public class BlockIngredient extends Ingredient {
         }
     }
 
-    public boolean hasNoMatchingItems() {
+    public boolean isEmpty() {
         return this.acceptedBlocks.length == 0 && (this.matchingBlocks == null || this.matchingBlocks.length == 0);
     }
 
@@ -137,7 +137,7 @@ public class BlockIngredient extends Ingredient {
                     throw new JsonSyntaxException("Block array cannot be empty, at least one item must be defined");
                 } else {
                     return fromBlockListStream(StreamSupport.stream(jsonarray.spliterator(), false).map((element) -> {
-                        return deserializeBlockList(JSONUtils.getJsonObject(element, "block"));
+                        return deserializeBlockList(JSONUtils.convertToJsonObject(element, "block"));
                     }));
                 }
             } else {
@@ -152,13 +152,13 @@ public class BlockIngredient extends Ingredient {
         if (json.has("block") && json.has("tag")) {
             throw new JsonParseException("An block ingredient entry is either a tag or an Block, not both");
         } else if (json.has("block")) {
-            ResourceLocation resourcelocation1 = new ResourceLocation(JSONUtils.getString(json, "block"));
+            ResourceLocation resourcelocation1 = new ResourceLocation(JSONUtils.getAsString(json, "block"));
             Block block = ForgeRegistries.BLOCKS.getValue(resourcelocation1);
             if (block == null) throw new JsonSyntaxException("Unknown item '" + resourcelocation1 + "'");
             return new SingleItemList(block);
         } else if (json.has("tag")) {
-            ResourceLocation resourcelocation = new ResourceLocation(JSONUtils.getString(json, "tag"));
-            ITag<Block> itag = TagCollectionManager.getManager().getBlockTags().get(resourcelocation);
+            ResourceLocation resourcelocation = new ResourceLocation(JSONUtils.getAsString(json, "tag"));
+            ITag<Block> itag = TagCollectionManager.getInstance().getBlocks().getTag(resourcelocation);
             if (itag == null) {
                 throw new JsonSyntaxException("Unknown item tag '" + resourcelocation + "'");
             } else {
@@ -209,7 +209,7 @@ public class BlockIngredient extends Ingredient {
         public Collection<Block> getStacks() {
             List<Block> list = Lists.newArrayList();
 
-            for (Block block : this.tag.getAllElements()) {
+            for (Block block : this.tag.getValues()) {
                 list.add(block);
             }
 
@@ -221,7 +221,7 @@ public class BlockIngredient extends Ingredient {
 
         public JsonObject serialize() {
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("tag", TagCollectionManager.getManager().getBlockTags().getValidatedIdFromTag(this.tag).toString());
+            jsonobject.addProperty("tag", TagCollectionManager.getInstance().getBlocks().getIdOrThrow(this.tag).toString());
             return jsonobject;
         }
     }

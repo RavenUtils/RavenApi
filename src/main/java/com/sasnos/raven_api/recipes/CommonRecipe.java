@@ -34,9 +34,9 @@ public abstract class CommonRecipe extends EssentialsRecipe {
     }
 
     while (i > 0) {
-      int j = ExperienceOrbEntity.getXPSplit(i);
+      int j = ExperienceOrbEntity.getExperienceValue(i);
       i -= j;
-      world.addEntity(new ExperienceOrbEntity(world, pos.x, pos.y, pos.z, j));
+      world.addFreshEntity(new ExperienceOrbEntity(world, pos.x, pos.y, pos.z, j));
     }
 
   }
@@ -65,7 +65,7 @@ public abstract class CommonRecipe extends EssentialsRecipe {
   }
 
   @Override
-  public ItemStack getCraftingResult(RecipeWrapper inv) {
+  public ItemStack assemble(RecipeWrapper inv) {
     return result.get(0);
   }
 

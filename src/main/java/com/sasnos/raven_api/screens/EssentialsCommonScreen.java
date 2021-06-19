@@ -18,13 +18,13 @@ public abstract class EssentialsCommonScreen<T extends EssentialsCommonContainer
   public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
     this.renderBackground(matrixStack);
     super.render(matrixStack, mouseX, mouseY, partialTicks);
-    this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+    this.renderTooltip(matrixStack, mouseX, mouseY);
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-    this.minecraft.getTextureManager().bindTexture(getGUI());
-    this.blit(matrixStack, guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+  protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    this.minecraft.getTextureManager().bind(getGUI());
+    this.blit(matrixStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
   }
 
   protected abstract ResourceLocation getGUI();

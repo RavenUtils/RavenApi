@@ -18,20 +18,20 @@ public abstract class FinishedRecipe implements IFinishedRecipe {
   }
 
   @Override
-  public ResourceLocation getID() {
+  public ResourceLocation getId() {
     return id;
   }
 
 
   @Nullable
   @Override
-  public JsonObject getAdvancementJson() {
+  public JsonObject serializeAdvancement() {
     return null;
   }
 
   @Nullable
   @Override
-  public ResourceLocation getAdvancementID() {
+  public ResourceLocation getAdvancementId() {
     return null;
   }
 }

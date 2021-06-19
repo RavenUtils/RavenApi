@@ -8,7 +8,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 public interface ICommonRecipe extends IRecipe<RecipeWrapper> {
 
   @Override
-  default boolean canFit(int width, int height) {
+  default boolean canCraftInDimensions(int width, int height) {
     return false;
   }
 
@@ -25,13 +25,13 @@ public interface ICommonRecipe extends IRecipe<RecipeWrapper> {
    */
   @Deprecated
   @Override
-  default ItemStack getRecipeOutput() {
+  default ItemStack getResultItem() {
     return getOutput().get(0);
   }
 
   @Deprecated
   @Override
-  default ItemStack getCraftingResult(RecipeWrapper inv) {
+  default ItemStack assemble(RecipeWrapper inv) {
     return getOutput().get(0).copy();
   }
 

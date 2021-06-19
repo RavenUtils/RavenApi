@@ -28,11 +28,11 @@ public abstract class EssentialsBlockStates extends BlockStateProvider {
   public void orientedBlock(Block block, Function<BlockState, ModelFile> modelFunc) {
     getVariantBuilder(block)
         .forAllStates(state -> {
-          Direction dir = state.get(BlockStateProperties.FACING);
+          Direction dir = state.getValue(BlockStateProperties.FACING);
           return ConfiguredModel.builder()
               .modelFile(modelFunc.apply(state))
-              .rotationX(dir.getAxis() == Direction.Axis.Y ? dir.getAxisDirection().getOffset() * -90 : 0)
-              .rotationY(dir.getAxis() != Direction.Axis.Y ? ((dir.getHorizontalIndex() + 2) % 4) * 90 : 0)
+              .rotationX(dir.getAxis() == Direction.Axis.Y ? dir.getAxisDirection().getStep() * -90 : 0)
+              .rotationY(dir.getAxis() != Direction.Axis.Y ? ((dir.get2DDataValue() + 2) % 4) * 90 : 0)
               .build();
         });
   }

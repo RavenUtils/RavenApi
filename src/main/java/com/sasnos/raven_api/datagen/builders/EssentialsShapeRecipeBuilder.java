@@ -33,7 +33,7 @@ public class EssentialsShapeRecipeBuilder {
   private final ItemStack result;
   private final List<String> pattern = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-  private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+  private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
   private String group;
 
   public EssentialsShapeRecipeBuilder(ItemStack resultIn) {
@@ -58,14 +58,14 @@ public class EssentialsShapeRecipeBuilder {
    * Adds a key to the recipe pattern.
    */
   public EssentialsShapeRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
-    return this.key(symbol, Ingredient.fromTag(tagIn));
+    return this.key(symbol, Ingredient.of(tagIn));
   }
 
   /**
    * Adds a key to the recipe pattern.
    */
   public EssentialsShapeRecipeBuilder key(Character symbol, IItemProvider itemIn) {
-    return this.key(symbol, Ingredient.fromItems(itemIn));
+    return this.key(symbol, Ingredient.of(itemIn));
   }
 
   /**
@@ -98,7 +98,7 @@ public class EssentialsShapeRecipeBuilder {
    * Adds a criterion needed to unlock the recipe.
    */
   public EssentialsShapeRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-    this.advancementBuilder.withCriterion(name, criterionIn);
+    this.advancementBuilder.addCriterion(name, criterionIn);
     return this;
   }
 
@@ -132,10 +132,10 @@ public class EssentialsShapeRecipeBuilder {
    */
   public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
     this.validate(id);
-    this.advancementBuilder.withParentId(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root"))
-        .withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id))
-        .withRewards(AdvancementRewards.Builder.recipe(id))
-        .withRequirementsStrategy(IRequirementsStrategy.OR);
+    this.advancementBuilder.parent(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root"))
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+        .rewards(AdvancementRewards.Builder.recipe(id))
+        .requirements(IRequirementsStrategy.OR);
     consumerIn.accept(new Result(
             id,
             this.result,
@@ -144,7 +144,7 @@ public class EssentialsShapeRecipeBuilder {
             this.key,
             this.advancementBuilder,
             new ResourceLocation(
-                id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + Objects.requireNonNull(this.result.getItem().getGroup()).getPath() + "/" + id.getPath()
+                id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + Objects.requireNonNull(this.result.getItem().getItemCategory()).getRecipeFolderName() + "/" + id.getPath()
             )
         )
     );
@@ -200,7 +200,7 @@ public class EssentialsShapeRecipeBuilder {
       this.advancementId = advancementIdIn;
     }
 
-    public void serialize(@NotNull JsonObject json) {
+    public void serializeRecipeData(@NotNull JsonObject json) {
       if (!this.group.isEmpty()) {
         json.addProperty("group", this.group);
       }
@@ -215,7 +215,7 @@ public class EssentialsShapeRecipeBuilder {
       JsonObject jsonobject = new JsonObject();
 
       for (Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
-        jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().serialize());
+        jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
       }
 
       json.add("key", jsonobject);
@@ -233,14 +233,14 @@ public class EssentialsShapeRecipeBuilder {
       json.add("result", jsonobject1);
     }
 
-    public @NotNull IRecipeSerializer<?> getSerializer() {
-      return IRecipeSerializer.CRAFTING_SHAPED;
+    public @NotNull IRecipeSerializer<?> getType() {
+      return IRecipeSerializer.SHAPED_RECIPE;
     }
 
     /**
      * Gets the ID for the recipe.
      */
-    public @NotNull ResourceLocation getID() {
+    public @NotNull ResourceLocation getId() {
       return this.id;
     }
 
@@ -248,16 +248,16 @@ public class EssentialsShapeRecipeBuilder {
      * Gets the JSON for the advancement that unlocks this recipe. Null if there is no advancement.
      */
     @Nullable
-    public JsonObject getAdvancementJson() {
-      return this.advancementBuilder.serialize();
+    public JsonObject serializeAdvancement() {
+      return this.advancementBuilder.serializeToJson();
     }
 
     /**
-     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #getAdvancementJson}
+     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #serializeAdvancement()}
      * is non-null.
      */
     @Nullable
-    public ResourceLocation getAdvancementID() {
+    public ResourceLocation getAdvancementId() {
       return this.advancementId;
     }
   }

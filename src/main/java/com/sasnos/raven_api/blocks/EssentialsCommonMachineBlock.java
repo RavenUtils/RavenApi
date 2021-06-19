@@ -17,6 +17,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public abstract class EssentialsCommonMachineBlock extends Block {
 
   public EssentialsCommonMachineBlock(Properties properties) {
@@ -30,7 +32,7 @@ public abstract class EssentialsCommonMachineBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public abstract ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit);
+  public abstract ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit);
 
   @Nullable
   @Override
@@ -41,7 +43,7 @@ public abstract class EssentialsCommonMachineBlock extends Block {
       ItemStack itemstack = inventory.getStackInSlot(i);
 
       if (itemstack.getCount() > 0) {
-        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
       }
     }
   }

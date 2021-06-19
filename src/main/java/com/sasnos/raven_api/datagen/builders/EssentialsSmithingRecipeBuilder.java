@@ -24,7 +24,7 @@ public class EssentialsSmithingRecipeBuilder {
   private final Ingredient base;
   private final Ingredient addition;
   private final ItemStack output;
-  private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+  private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
   private final IRecipeSerializer<?> serializer;
 
   public EssentialsSmithingRecipeBuilder(IRecipeSerializer<?> serializer, Ingredient base, Ingredient addition, ItemStack output) {
@@ -43,7 +43,7 @@ public class EssentialsSmithingRecipeBuilder {
   }
 
   public EssentialsSmithingRecipeBuilder addCriterion(String name, ICriterionInstance criterion) {
-    this.advancementBuilder.withCriterion(name, criterion);
+    this.advancementBuilder.addCriterion(name, criterion);
     return this;
   }
 
@@ -57,8 +57,8 @@ public class EssentialsSmithingRecipeBuilder {
 
   public void build(Consumer<IFinishedRecipe> recipe, ResourceLocation id) {
     this.validate(id);
-    this.advancementBuilder.withParentId(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-    recipe.accept(new EssentialsSmithingRecipeBuilder.Result(id, this.serializer, this.base, this.addition, this.output, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + Objects.requireNonNull(this.output.getItem().getGroup()).getPath() + "/" + id.getPath())));
+    this.advancementBuilder.parent(new ResourceLocation("RavenApi/src/main/java/com/sasnos/raven_api/recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+    recipe.accept(new EssentialsSmithingRecipeBuilder.Result(id, this.serializer, this.base, this.addition, this.output, this.advancementBuilder, new ResourceLocation(id.getNamespace(), "RavenApi/src/main/java/com/sasnos/raven_api/recipes/" + Objects.requireNonNull(this.output.getItem().getItemCategory()).getRecipeFolderName() + "/" + id.getPath())));
   }
 
   private void validate(ResourceLocation id) {
@@ -86,9 +86,9 @@ public class EssentialsSmithingRecipeBuilder {
       this.advancementId = advancementId;
     }
 
-    public void serialize(JsonObject json) {
-      json.add("base", this.base.serialize());
-      json.add("addition", this.addition.serialize());
+    public void serializeRecipeData(JsonObject json) {
+      json.add("base", this.base.toJson());
+      json.add("addition", this.addition.toJson());
       JsonObject jsonobject = new JsonObject();
       jsonobject.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.output.getItem())).toString());
       if (output.hasTag()) {
@@ -103,11 +103,11 @@ public class EssentialsSmithingRecipeBuilder {
     /**
      * Gets the ID for the recipe.
      */
-    public @NotNull ResourceLocation getID() {
+    public @NotNull ResourceLocation getId() {
       return this.id;
     }
 
-    public @NotNull IRecipeSerializer<?> getSerializer() {
+    public @NotNull IRecipeSerializer<?> getType() {
       return this.serializer;
     }
 
@@ -115,16 +115,16 @@ public class EssentialsSmithingRecipeBuilder {
      * Gets the JSON for the advancement that unlocks this recipe. Null if there is no advancement.
      */
     @Nullable
-    public JsonObject getAdvancementJson() {
-      return this.advancementBuilder.serialize();
+    public JsonObject serializeAdvancement() {
+      return this.advancementBuilder.serializeToJson();
     }
 
     /**
-     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #getAdvancementJson}
+     * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #serializeAdvancement()}
      * is non-null.
      */
     @Nullable
-    public ResourceLocation getAdvancementID() {
+    public ResourceLocation getAdvancementId() {
       return this.advancementId;
     }
   }
